@@ -32,19 +32,32 @@ if 'canvas_key_counter' not in st.session_state:
 # ==========================================
 # FUNÇÕES COM CACHE (OTIMIZAÇÃO DE PERFORMANCE EXTREMA)
 # ==========================================
+
+
 @st.cache_data(show_spinner=False)
 def obter_info_pdf(pdf_bytes):
-    info = pdfinfo_from_bytes(pdf_bytes, poppler_path=CAMINHO_POPPLER)
+    # Se for Windows, usa o caminho. Se for Linux (Nuvem), deixa o sistema achar sozinho.
+    if CAMINHO_POPPLER:
+        info = pdfinfo_from_bytes(pdf_bytes, poppler_path=CAMINHO_POPPLER)
+    else:
+        info = pdfinfo_from_bytes(pdf_bytes)
     return info["Pages"]
 
 @st.cache_data(show_spinner=False)
 def carregar_pagina_pdf(pdf_bytes, pagina):
-    images = convert_from_bytes(
-        pdf_bytes, 
-        first_page=pagina, 
-        last_page=pagina, 
-        poppler_path=CAMINHO_POPPLER
-    )
+    if CAMINHO_POPPLER:
+        images = convert_from_bytes(
+            pdf_bytes, 
+            first_page=pagina, 
+            last_page=pagina, 
+            poppler_path=CAMINHO_POPPLER
+        )
+    else:
+        images = convert_from_bytes(
+            pdf_bytes, 
+            first_page=pagina, 
+            last_page=pagina
+        )
     return images[0]
 
 # Upload do arquivo
