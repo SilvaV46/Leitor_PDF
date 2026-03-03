@@ -1,6 +1,7 @@
-streamlit==1.29.0
-streamlit-drawable-canvas==0.9.3
+streamlit
 pdf2image
 pytesseract
+numpy
+streamlit-drawable-canvas
 pandas
 Pillow
