@@ -24,9 +24,9 @@ def check_password():
         senha = st.session_state["password"]
         
         # 1. Verifica o domínio do e-mail
-        if not usuario.endswith("@greentech.com.br"):
+        if not usuario.endswith("@greentech.log.br"):
             st.session_state["password_correct"] = False
-            st.error("❌ Acesso restrito a e-mails @greentech.com.br")
+            st.error("❌ Acesso restrito a e-mails @greentech.log.br")
             return
 
         # 2. Verifica a senha comparando com o que está nos Secrets do Streamlit
@@ -40,13 +40,13 @@ def check_password():
 
     if "password_correct" not in st.session_state:
         st.title("🔐 Login - GreenTech")
-        st.text_input("E-mail Corporativo", key="username", placeholder="exemplo@greentech.com.br")
+        st.text_input("E-mail Corporativo", key="username", placeholder="exemplo@greentech.log.br")
         st.text_input("Senha", type="password", key="password", on_change=password_entered)
-        st.info("Utilize seu e-mail @greentech.com.br para acessar a ferramenta.")
+        st.info("Utilize seu e-mail @greentech.log.br para acessar a ferramenta.")
         return False
     elif not st.session_state["password_correct"]:
         st.title("🔐 Login - GreenTech")
-        st.text_input("E-mail Corporativo", key="username", placeholder="exemplo@greentech.com.br")
+        st.text_input("E-mail Corporativo", key="username", placeholder="exemplo@greentech.log.br")
         st.text_input("Senha", type="password", key="password", on_change=password_entered)
         st.error("😕 Credenciais inválidas.")
         return False
@@ -67,7 +67,7 @@ if check_password():
         pytesseract.pytesseract.tesseract_cmd = "tesseract"
 
     # Barra Lateral
-    st.sidebar.image("https://www.greentech.com.br/wp-content/uploads/2021/05/logo-greentech.png", width=150) # Exemplo de logo
+    st.sidebar.image("https://www.greentech.log.br/wp-content/uploads/2021/05/logo-greentech.png", width=150) # Exemplo de logo
     if st.sidebar.button("🚪 Sair"):
         st.session_state.clear()
         st.rerun()
