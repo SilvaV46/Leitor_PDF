@@ -81,18 +81,22 @@ if check_password():
     # Funções Otimizadas
     @st.cache_data(show_spinner=False)
     def obter_info_pdf(pdf_bytes):
-        if CAMINHO_POPPLER:
-            info = pdfinfo_from_bytes(pdf_bytes, poppler_path=CAMINHO_POPPLER)
-        else:
-            info = pdfinfo_from_bytes(pdf_bytes)
+        # No Linux, não passamos o poppler_path se for None
+        kwargs = {"poppler_path": CAMINHO_POPPLER} if CAMINHO_POPPLER else {}
+        info = pdfinfo_from_bytes(pdf_bytes, **kwargs)
         return info["Pages"]
 
     @st.cache_data(show_spinner=False)
     def carregar_pagina_pdf(pdf_bytes, pagina):
-        if CAMINHO_POPPLER:
-            images = convert_from_bytes(pdf_bytes, first_page=pagina, last_page=pagina, poppler_path=CAMINHO_POPPLER)
-        else:
-            images = convert_from_bytes(pdf_bytes, first_page=pagina, last_page=pagina)
+        # No Linux, não passamos o poppler_path se for None
+        kwargs = {"poppler_path": CAMINHO_POPPLER} if CAMINHO_POPPLER else {}
+        images = convert_from_bytes(
+            pdf_bytes, 
+            first_page=pagina, 
+            last_page=pagina, 
+            fmt="jpeg", # Forçar JPEG economiza MUITA memória no servidor
+            **kwargs
+        )
         return images[0]
 
     uploaded_file = st.file_uploader("Faça upload de um PDF", type="pdf")
